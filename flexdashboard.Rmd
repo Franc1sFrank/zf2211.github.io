@@ -1,0 +1,90 @@
+---
+title: "NY NOAA"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r}
+# load packages and data
+library(flexdashboard)
+library(tidyverse)
+library(viridisLite)
+library(viridis)
+library(p8105.datasets)
+library(plotly)
+
+```
+
+```{r}
+# tidy data
+data(ny_noaa, package = "p8105.datasets")
+#Create year, month, day variables
+ny_noaa <- 
+  ny_noaa %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-")
+
+# change variable types
+ny_noaa$tmax = as.numeric(unclass(ny_noaa$tmax))
+ny_noaa$tmin = as.numeric(unclass(ny_noaa$tmin))
+ny_noaa$year = as.numeric(unclass(ny_noaa$year))
+ny_noaa$month = as.numeric(unclass(ny_noaa$month))
+ny_noaa$day = as.numeric(unclass(ny_noaa$day))
+#mutate the value of varialbes so that they are in integral units (mm and ºC)
+ny_noaa <- 
+  ny_noaa %>% 
+  mutate(tmax = tmax * 0.1, tmin = tmin * 0.1, prcp = prcp * 0.1)  
+
+
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Plotting 1995 January tmax vs tmin
+
+```{r}
+filter(ny_noaa, year == 1995, month == 1) %>% 
+  na.omit(cols= c("tmax", "tmin")) %>%  #omit NA
+  plot_ly(x = ~tmin, y = ~tmax, mode = "markers", alpha = 0.3,  type = "scatter", color = ~prcp)
+```
+
+
+
+
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Average temprature in January
+
+```{r}
+avg_jan <- 
+  ny_noaa %>% 
+  na.omit("tmax") %>% 
+  filter(month == 1) %>% 
+  group_by(id, year) %>% 
+  summarize(avg_temp = mean(tmax)) 
+ 
+plot_ly(avg_jan, x = ~year, y = ~avg_temp, type = "bar")
+```
+
+
+
+
+
+
+
+### Plot distribution of snowfall values between 0 & 100mm
+
+```{r}
+ny_noaa  %>% 
+  na.omit(cols = "snow_mm") %>% #omit NA
+  filter(snow > 0 & snow <100) %>% 
+  plot_ly(x = ~snow, y = ~as.character(year), type = "box")
+```
+

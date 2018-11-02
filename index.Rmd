@@ -1,0 +1,40 @@
+---
+title: "All hail to the ONE LORD!"
+---
+
+# This is my website!
+
+##All I do here is to prove that only __God__ can save this Planet!
+##Check it out!
+
+And I can put all kinds of stuff on this website!
+
+I *could* write some code and I'm going to do it.
+
+
+### NEW! This [flexdashboard](flexdashboard.html) is to show that the God manipulated NY weather.
+
+
+I like [to look for code on the internet](https://www.google.com).
+
+I like [to travel with the Lord](https://www.nationalgeographic.com/)
+
+I can link directly to my [about page](about.html).
+
+
+### I added a photo of the Lord. (Ordinary people CANNOT see)
+<img src="images/250px-Gatto_europeo4.jpg" style="width:75%">
+
+
+### Lord displayed some mysterious numbers on my window, what does that mean?
+
+```{r}
+library(tidyverse)
+
+tibble(
+  x = 1:10,
+  y = x+2
+)
+```
+
+
